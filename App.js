@@ -1,22 +1,32 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { NavigationContainer} from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
+import axios from 'axios';    // to handle HTTP request API
 
 import HomeScreen from './src/screens/HomeScreen';
 import AddGoal from './src/screens/AddGoal';
 import AllGoals from './src/screens/AllGoals';
 
+import { storeGoal, fetchGoals } from './src/utility/http'; 
 
 export default function App() {
   const [courseGoals, setCourseGoals] = useState([]);
 
+  useEffect(() => {
+    fetchGoals()  // Call the fetchGoals function to retrieve goals
+      .then(fetchedGoals => setCourseGoals(fetchedGoals))
+      .catch(error => console.error('Error fetching goals:', error));
+  }, []);
+
   function addGoalHandler(enteredGoalText) {
-    setCourseGoals(currentCourseGoals => [
-      ...currentCourseGoals,
-      { text: enteredGoalText, id: Math.random().toString() },
-    ]);
+    storeGoal(enteredGoalText)  // Call the storeGoal function
+      .then(response => {
+        // Assuming the response contains the goal that was added
+        setCourseGoals(currentCourseGoals => [...currentCourseGoals, response.data]);
+      })
+      .catch(error => console.error('Error adding goal:', error));
   }
 
   const BottomTabs = createBottomTabNavigator();

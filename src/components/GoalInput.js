@@ -12,7 +12,7 @@ function GoalInput (props) {  // pass event handlers via props
 
     function addGoalHandler() {
         props.onAddGoal(enteredGoalText);       // forward 'enteredGoalText' manually
-        setEnteredGoalText('');   // setting the text input back to empty string
+        setEnteredGoalText('');                 // setting the text input back to empty string
     };
 
     return(

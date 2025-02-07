@@ -1,8 +1,18 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, FlatList, StyleSheet } from 'react-native';
 import GoalItem from '../components/GoalItem';
 
-const AllGoals = ({ goals }) => {
+import { fetchGoals } from '../utility/http';
+
+function AllGoals() {
+  const [goals, setGoals] = useState([]);
+
+  useEffect(() => {
+    fetchGoals()  // Use the new fetchGoals function to get the goals
+      .then(fetchedGoals => setGoals(fetchedGoals))
+      .catch(error => console.error('Error fetching goals:', error));
+  }, []);
+
   return (
     <View style={styles.container}>
       <FlatList
